@@ -1,0 +1,32 @@
+{
+  "name": "neilcrookes/oauth2-ebay",
+  "description": "eBay OAuth 2.0 Client Provider for The PHP League OAuth2-Client",
+  "keywords": [
+    "oauth",
+    "oauth2",
+    "authorization",
+    "authentication",
+    "idp",
+    "identity",
+    "sso",
+    "single sign on",
+    "ebay",
+    "ebay api"
+  ],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Neil Crookes",
+      "email": "neil@crook.es"
+    }
+  ],
+  "require": {
+    "php": ">=5.6.0",
+    "league/oauth2-client": "^2.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "NeilCrookes\\OAuth2\\Client\\": "src/"
+    }
+  }
+}
