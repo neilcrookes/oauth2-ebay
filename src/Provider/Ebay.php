@@ -532,10 +532,10 @@ class Ebay extends AbstractProvider
      */
     private function getSiteId()
     {
-        if (null !== $this->globalId && array_key_exists($this->globalId, $this->globalIdToSideIdMap))
+        if (null !== $this->globalId && array_key_exists($this->globalId, $this->globalIdToSiteIdMap))
         {
-            return $this->globalIdToSideIdMap[$this->globalId];
+            return $this->globalIdToSiteIdMap[$this->globalId];
         }
-        return $this->globalIdToSideIdMap[$this->defaultGlobalId];
+        return $this->globalIdToSiteIdMap[$this->defaultGlobalId];
     }
 }
