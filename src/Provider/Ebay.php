@@ -109,35 +109,35 @@ class Ebay extends AbstractProvider
 //    const SITE_ID_EBAY_ZA   = ?;             // eBay South Africa
 
     /**
-     * eBay Marketplace URLs (need to fill in the missing ones)
+     * eBay Marketplace Site URLs (need to fill in the missing ones)
      */
-    const URL_EBAY_US = 'https://www.ebay.com';
-    const URL_EBAY_US_MOTOR = 'https://www.ebay.com/motors';
-    const URL_EBAY_AT = 'https://www.ebay.at';
-    const URL_EBAY_AU = 'https://www.ebay.com.au';
-    const URL_EBAY_NLBE = 'https://www.benl.ebay.be/';
-    const URL_EBAY_FRBE = 'https://www.befr.ebay.be';
-    const URL_EBAY_ENCA = 'https://www.ebay.ca';
-    const URL_EBAY_FRCA = 'https://www.cafr.ebay.ca';
-    const URL_EBAY_CH = 'https://www.ebay.ch';
-    const URL_EBAY_DE = 'https://www.ebay.de';
-    const URL_EBAY_ES = 'https://www.ebay.es';
-    const URL_EBAY_FR = 'https://www.ebay.fr';
-    const URL_EBAY_GB = 'https://www.ebay.co.uk';
-    const URL_EBAY_HK = 'https://www.ebay.com.hk';
-    const URL_EBAY_IE = 'https://www.ebay.ie';
-    const URL_EBAY_IN = 'https://www.ebay.in';
-    const URL_EBAY_IT = 'https://www.ebay.it';
-    const URL_EBAY_MY = 'https://www.ebay.com.my';
-    const URL_EBAY_NL = 'https://www.ebay.nl';
-    const URL_EBAY_PH = 'https://www.ebay.ph';
-    const URL_EBAY_PL = 'https://www.ebay.pl';
-    const URL_EBAY_SG = 'https://www.ebay.com.sg';
+    const SITE_URL_EBAY_US = 'https://www.ebay.com';
+    const SITE_URL_EBAY_US_MOTOR = 'https://www.ebay.com/motors';
+    const SITE_URL_EBAY_AT = 'https://www.ebay.at';
+    const SITE_URL_EBAY_AU = 'https://www.ebay.com.au';
+    const SITE_URL_EBAY_NLBE = 'https://www.benl.ebay.be/';
+    const SITE_URL_EBAY_FRBE = 'https://www.befr.ebay.be';
+    const SITE_URL_EBAY_ENCA = 'https://www.ebay.ca';
+    const SITE_URL_EBAY_FRCA = 'https://www.cafr.ebay.ca';
+    const SITE_URL_EBAY_CH = 'https://www.ebay.ch';
+    const SITE_URL_EBAY_DE = 'https://www.ebay.de';
+    const SITE_URL_EBAY_ES = 'https://www.ebay.es';
+    const SITE_URL_EBAY_FR = 'https://www.ebay.fr';
+    const SITE_URL_EBAY_GB = 'https://www.ebay.co.uk';
+    const SITE_URL_EBAY_HK = 'https://www.ebay.com.hk';
+    const SITE_URL_EBAY_IE = 'https://www.ebay.ie';
+    const SITE_URL_EBAY_IN = 'https://www.ebay.in';
+    const SITE_URL_EBAY_IT = 'https://www.ebay.it';
+    const SITE_URL_EBAY_MY = 'https://www.ebay.com.my';
+    const SITE_URL_EBAY_NL = 'https://www.ebay.nl';
+    const SITE_URL_EBAY_PH = 'https://www.ebay.ph';
+    const SITE_URL_EBAY_PL = 'https://www.ebay.pl';
+    const SITE_URL_EBAY_SG = 'https://www.ebay.com.sg';
 
     /**
      * @var array
      */
-    private $globalIdToSideIdMap = [
+    private $globalIdToSiteIdMap = [
         self::GLOBAL_ID_EBAY_US    => self::SITE_ID_EBAY_US,    // eBay United States
         self::GLOBAL_ID_EBAY_ENCA  => self::SITE_ID_EBAY_ENCA,  // eBay Canada (English)
         self::GLOBAL_ID_EBAY_GB    => self::SITE_ID_EBAY_GB,    // eBay UK
@@ -185,29 +185,29 @@ class Ebay extends AbstractProvider
     /**
      * @var array
      */
-    private $globalIdToMarketplaceUrlMap = [
-        self::GLOBAL_ID_EBAY_US => self::URL_EBAY_US, // United States en-US, pt-BR, ru-RU
-        self::GLOBAL_ID_EBAY_AT => self::URL_EBAY_AT, // Austria de-AT
-        self::GLOBAL_ID_EBAY_AU => self::URL_EBAY_AU, // Australia en-AU
-        self::GLOBAL_ID_EBAY_NLBE => self::URL_EBAY_NLBE, // Belgium (Nederlandse)
-        self::GLOBAL_ID_EBAY_FRBE => self::URL_EBAY_FRBE, // Belgium (French)  (Française)	fr-BE, nl-BE
-        self::GLOBAL_ID_EBAY_ENCA => self::URL_EBAY_ENCA, // Canada (English)
-        self::GLOBAL_ID_EBAY_FRCA => self::URL_EBAY_FRCA, // Canada (French)   (Française)	en-CA, fr-CA
-        self::GLOBAL_ID_EBAY_CH => self::URL_EBAY_CH, // Switzerland de-CH
-        self::GLOBAL_ID_EBAY_DE => self::URL_EBAY_DE, // Germany de-DE
-        self::GLOBAL_ID_EBAY_ES => self::URL_EBAY_ES, // Spain es-ES
-        self::GLOBAL_ID_EBAY_FR => self::URL_EBAY_FR, // France fr-FR
-        self::GLOBAL_ID_EBAY_GB => self::URL_EBAY_GB, // Great Britain en-GB
-        self::GLOBAL_ID_EBAY_HK => self::URL_EBAY_HK, // Hong Kong zh-HK
-        self::GLOBAL_ID_EBAY_IE => self::URL_EBAY_IE, // Ireland en-IE
-        self::GLOBAL_ID_EBAY_IN => self::URL_EBAY_IN, // India en-GB
-        self::GLOBAL_ID_EBAY_IT => self::URL_EBAY_IT, // Italy it-IT
-        self::GLOBAL_ID_EBAY_MY => self::URL_EBAY_MY, // Malaysia en-US
-        self::GLOBAL_ID_EBAY_NL => self::URL_EBAY_NL, // Netherlands nl-NL
-        self::GLOBAL_ID_EBAY_PH => self::URL_EBAY_PH, // Philippines en-PH
-        self::GLOBAL_ID_EBAY_PL => self::URL_EBAY_PL, // Poland pl-PL
-        self::GLOBAL_ID_EBAY_SG => self::URL_EBAY_SG, // Singapore en-US
-        self::GLOBAL_ID_EBAY_MOTOR => self::URL_EBAY_US_MOTOR, // United States en-US
+    private $globalIdToMarketplaceSiteUrlMap = [
+        self::GLOBAL_ID_EBAY_US => self::SITE_URL_EBAY_US, // United States en-US, pt-BR, ru-RU
+        self::GLOBAL_ID_EBAY_AT => self::SITE_URL_EBAY_AT, // Austria de-AT
+        self::GLOBAL_ID_EBAY_AU => self::SITE_URL_EBAY_AU, // Australia en-AU
+        self::GLOBAL_ID_EBAY_NLBE => self::SITE_URL_EBAY_NLBE, // Belgium (Nederlandse)
+        self::GLOBAL_ID_EBAY_FRBE => self::SITE_URL_EBAY_FRBE, // Belgium (French)  (Française)	fr-BE, nl-BE
+        self::GLOBAL_ID_EBAY_ENCA => self::SITE_URL_EBAY_ENCA, // Canada (English)
+        self::GLOBAL_ID_EBAY_FRCA => self::SITE_URL_EBAY_FRCA, // Canada (French)   (Française)	en-CA, fr-CA
+        self::GLOBAL_ID_EBAY_CH => self::SITE_URL_EBAY_CH, // Switzerland de-CH
+        self::GLOBAL_ID_EBAY_DE => self::SITE_URL_EBAY_DE, // Germany de-DE
+        self::GLOBAL_ID_EBAY_ES => self::SITE_URL_EBAY_ES, // Spain es-ES
+        self::GLOBAL_ID_EBAY_FR => self::SITE_URL_EBAY_FR, // France fr-FR
+        self::GLOBAL_ID_EBAY_GB => self::SITE_URL_EBAY_GB, // Great Britain en-GB
+        self::GLOBAL_ID_EBAY_HK => self::SITE_URL_EBAY_HK, // Hong Kong zh-HK
+        self::GLOBAL_ID_EBAY_IE => self::SITE_URL_EBAY_IE, // Ireland en-IE
+        self::GLOBAL_ID_EBAY_IN => self::SITE_URL_EBAY_IN, // India en-GB
+        self::GLOBAL_ID_EBAY_IT => self::SITE_URL_EBAY_IT, // Italy it-IT
+        self::GLOBAL_ID_EBAY_MY => self::SITE_URL_EBAY_MY, // Malaysia en-US
+        self::GLOBAL_ID_EBAY_NL => self::SITE_URL_EBAY_NL, // Netherlands nl-NL
+        self::GLOBAL_ID_EBAY_PH => self::SITE_URL_EBAY_PH, // Philippines en-PH
+        self::GLOBAL_ID_EBAY_PL => self::SITE_URL_EBAY_PL, // Poland pl-PL
+        self::GLOBAL_ID_EBAY_SG => self::SITE_URL_EBAY_SG, // Singapore en-US
+        self::GLOBAL_ID_EBAY_MOTOR => self::SITE_URL_EBAY_US_MOTOR, // United States en-US
 //        self::GLOBAL_ID_EBAY_TH => 'https://info.ebay.co.th', // Thailand th-TH
 //        self::GLOBAL_ID_EBAY_TW => 'https://www.ebay.com.tw', // Taiwan zh-TW
 //        self::GLOBAL_ID_EBAY_VN => 'https://www.ebay.vn', // Vietnam en-US
@@ -350,6 +350,30 @@ class Ebay extends AbstractProvider
     public function getLocaleToDefaultGlobalIdMap()
     {
         return $this->localeToDefaultGlobalIdMap;
+    }
+
+    /**
+     * @return array
+     */
+    public function getGlobalIdToSiteIdMap()
+    {
+        return $this->globalIdToSiteIdMap;
+    }
+
+    /**
+     * @return array
+     */
+    public function getGlobalIdToMarketplaceSiteUrlMap()
+    {
+        return $this->globalIdToMarketplaceSiteUrlMap;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDefaultGlobalId()
+    {
+        return $this->defaultGlobalId;
     }
 
     /**
