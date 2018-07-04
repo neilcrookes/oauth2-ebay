@@ -16,6 +16,9 @@ class Ebay extends AbstractProvider
 {
     use BearerAuthorizationTrait, ArrayAccessorTrait;
 
+    const BASE_URI_PRODUCTION = 'https://api.ebay.com';
+    const BASE_URI_SANDBOX = 'https://api.sandbox.ebay.com';
+
     /**
      * eBay Global IDs
      */
@@ -275,23 +278,23 @@ class Ebay extends AbstractProvider
     ];
 
     private $sandboxAccessTokenUrlsByEbayGlobalId = [
-        self::GLOBAL_ID_EBAY_US => 'https://api.sandbox.ebay.com/identity/v1/oauth2/token',
-        self::GLOBAL_ID_EBAY_FR => 'https://api.sandbox.ebay.fr/identity/v1/oauth2/token',
+        self::GLOBAL_ID_EBAY_US => self::BASE_URI_SANDBOX.'/identity/v1/oauth2/token',
+        self::GLOBAL_ID_EBAY_FR => self::BASE_URI_SANDBOX.'/identity/v1/oauth2/token',
     ];
 
     private $productionAccessTokenUrlsByEbayGlobalId = [
-        self::GLOBAL_ID_EBAY_US => 'https://api.ebay.com/identity/v1/oauth2/token',
-        self::GLOBAL_ID_EBAY_FR => 'https://api.ebay.com/identity/v1/oauth2/token',
+        self::GLOBAL_ID_EBAY_US => self::BASE_URI_PRODUCTION.'/identity/v1/oauth2/token',
+        self::GLOBAL_ID_EBAY_FR => self::BASE_URI_PRODUCTION.'/identity/v1/oauth2/token',
     ];
 
     private $sandboxResourceOwnerDetailsUrlsByEbayGlobalId = [
-        self::GLOBAL_ID_EBAY_US => 'https://api.sandbox.ebay.com/ws/api.dll',
-        self::GLOBAL_ID_EBAY_FR => 'https://api.sandbox.ebay.com/ws/api.dll',
+        self::GLOBAL_ID_EBAY_US => self::BASE_URI_SANDBOX.'/ws/api.dll',
+        self::GLOBAL_ID_EBAY_FR => self::BASE_URI_SANDBOX.'/ws/api.dll',
     ];
 
     private $productionResourceOwnerDetailsUrlsByEbayGlobalId = [
-        self::GLOBAL_ID_EBAY_US => 'https://api.ebay.com/ws/api.dll',
-        self::GLOBAL_ID_EBAY_FR => 'https://api.ebay.com/ws/api.dll',
+        self::GLOBAL_ID_EBAY_US => self::BASE_URI_PRODUCTION.'/ws/api.dll',
+        self::GLOBAL_ID_EBAY_FR => self::BASE_URI_PRODUCTION.'/ws/api.dll',
     ];
 
     /**
@@ -443,7 +446,7 @@ class Ebay extends AbstractProvider
      * @param  AccessToken $token
      * @return mixed
      */
-    protected function fetchResourceOwnerDetails(AccessToken $token)
+    public function fetchResourceOwnerDetails(AccessToken $token)
     {
         $url = $this->getResourceOwnerDetailsUrl($token);
 
