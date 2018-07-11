@@ -10,11 +10,16 @@ use League\OAuth2\Client\Token\AccessToken;
 use League\OAuth2\Client\Tool\ArrayAccessorTrait;
 use League\OAuth2\Client\Tool\BearerAuthorizationTrait;
 use NeilCrookes\OAuth2\Client\Token\EbayAccessToken;
+use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
+use UnexpectedValueException;
 
 class Ebay extends AbstractProvider
 {
-    use BearerAuthorizationTrait, ArrayAccessorTrait;
+    use BearerAuthorizationTrait {
+        BearerAuthorizationTrait::getAuthorizationHeaders as BearerAuthorizationTraitGetAuthorizationHeaders;
+    }
+    use ArrayAccessorTrait;
 
     const BASE_URI_PRODUCTION = 'https://api.ebay.com';
     const BASE_URI_SANDBOX = 'https://api.sandbox.ebay.com';
@@ -313,6 +318,11 @@ class Ebay extends AbstractProvider
     protected $globalId;
 
     /**
+     * @var bool
+     */
+    private $isTraditionalApi = false;
+
+    /**
      * Returns the base URL for authorizing a client.
      *
      * Eg. https://oauth.service.com/authorize
@@ -425,6 +435,22 @@ class Ebay extends AbstractProvider
     }
 
     /**
+     * @param EbayAccessToken $accessToken
+     * @return EbayAccessToken
+     */
+    public function refreshAccessToken(EbayAccessToken $accessToken)
+    {
+        $newAccessToken = $this->getAccessToken('refresh_token', [
+            'refresh_token' => $accessToken->getRefreshToken()
+        ]);
+        $options = array_merge($accessToken->jsonSerialize(), [
+            'access_token' => $newAccessToken->getToken(),
+            'expires' => $newAccessToken->getExpires()
+        ]);
+        return new EbayAccessToken($options);
+    }
+
+    /**
      * Returns the URL for requesting the resource owner's details.
      *
      * @param AccessToken $token
@@ -452,39 +478,66 @@ class Ebay extends AbstractProvider
 
         $body = '<?xml version="1.0" encoding="utf-8"?>
 <GetUserRequest xmlns="urn:ebay:apis:eBLBaseComponents">
+<DetailLevel>ReturnAll</DetailLevel>
 </GetUserRequest>';
 
         $request = $this->getAuthenticatedRequest(self::METHOD_POST, $url, $token, [
             'headers' => [
-                'X-EBAY-API-IAF-TOKEN' => $token->getToken(),
-                'X-EBAY-API-COMPATIBILITY-LEVEL' => '1061',
                 'X-EBAY-API-CALL-NAME' => 'GetUser',
-                'X-EBAY-API-SITEID' => $this->getSiteId(),
                 'Content-Type' => 'text/xml',
                 'Content-Length' => strlen($body),
             ],
             'body' => $body,
         ]);
 
-        $response = $this->getParsedResponse($request);
-
-        $response = simplexml_load_string($response);
-
-        return $this->xml2array($response);
+        return $this->getParsedResponse($request);
     }
 
     /**
-     * @param $xmlObject
-     * @param array $out
+     * Returns an authenticated PSR-7 request instance.
+     *
+     * @param  string $method
+     * @param  string $url
+     * @param  AccessToken|string $token
+     * @param  array $options Any of "headers", "body", and "protocolVersion".
+     * @return RequestInterface
+     */
+    public function getAuthenticatedRequest($method, $url, $token, array $options = [])
+    {
+        if (false !== strpos($url, '/ws/api.dll'))
+        {
+            $this->isTraditionalApi = true;
+        }
+        else
+        {
+            $this->isTraditionalApi = false;
+        }
+        return parent::getAuthenticatedRequest($method, $url, $token, $options);
+    }
+
+    /**
+     * Parses the response according to its content-type header.
+     *
+     * @throws UnexpectedValueException
+     * @param  ResponseInterface $response
      * @return array
      */
-    function xml2array($xmlObject, $out = [])
+    protected function parseResponse(ResponseInterface $response)
     {
-        foreach ((array)$xmlObject as $index => $node)
+        $content = trim((string) $response->getBody());
+
+        if (empty($content))
         {
-            $out[$index] = (is_object($node) || is_array($node)) ? $this->xml2array($node) : $node;
+            return [];
         }
-        return $out;
+
+        $type = $this->getContentType($response);
+
+        if (strpos($type, 'xml') !== false) {
+            return $this->parseXml($response);
+        }
+
+        return parent::parseResponse($response);
     }
 
     /**
@@ -540,5 +593,59 @@ class Ebay extends AbstractProvider
             return $this->globalIdToSiteIdMap[$this->globalId];
         }
         return $this->globalIdToSiteIdMap[$this->defaultGlobalId];
+    }
+
+    /**
+     * Returns the authorization headers used by this provider.
+     *
+     * Typically this is "Bearer" or "MAC". For more information see:
+     * http://tools.ietf.org/html/rfc6749#section-7.1
+     *
+     * No default is provided, providers must overload this method to activate
+     * authorization headers.
+     *
+     * @param  mixed|null $token Either a string or an access token instance
+     * @return array
+     */
+    protected function getAuthorizationHeaders($token = null)
+    {
+        if (!$token)
+        {
+            return [];
+        }
+        if ($this->isTraditionalApi)
+        {
+            return [
+                'X-EBAY-API-IAF-TOKEN' => $token->getToken(),
+                'X-EBAY-API-COMPATIBILITY-LEVEL' => '1061',
+                'X-EBAY-API-SITEID' => $this->getSiteId(),
+            ];
+        }
+        return $this->BearerAuthorizationTraitGetAuthorizationHeaders($token);
+    }
+
+    /**
+     * @param ResponseInterface $response
+     * @return array
+     */
+    protected function parseXml(ResponseInterface $response)
+    {
+        $content = (string) $response->getBody();
+        $xml = simplexml_load_string($content);
+        return $this->xml2array($xml);
+    }
+
+    /**
+     * @param $xmlObject
+     * @param array $out
+     * @return array
+     */
+    function xml2array($xmlObject, $out = [])
+    {
+        foreach ((array)$xmlObject as $index => $node)
+        {
+            $out[$index] = (is_object($node) || is_array($node)) ? $this->xml2array($node) : $node;
+        }
+        return $out;
     }
 }
