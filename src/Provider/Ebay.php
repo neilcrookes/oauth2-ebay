@@ -522,7 +522,7 @@ class Ebay extends AbstractProvider
      * @param  ResponseInterface $response
      * @return array
      */
-    protected function parseResponse(ResponseInterface $response)
+    public function parseResponse(ResponseInterface $response)
     {
         $content = trim((string) $response->getBody());
 
