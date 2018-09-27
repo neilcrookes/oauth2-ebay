@@ -431,6 +431,11 @@ class Ebay extends AbstractProvider
      */
     protected function createAccessToken(array $response, AbstractGrant $grant)
     {
+        if (!array_key_exists('access_token', $response))
+        {
+            $message = sprintf('Cannot create access token for eBay since response does not include an `access_token` key');
+            throw new IdentityProviderException($message, 0, $response);
+        }
         return new EbayAccessToken($response);
     }
 
@@ -563,7 +568,10 @@ class Ebay extends AbstractProvider
      */
     protected function checkResponse(ResponseInterface $response, $data)
     {
-        return;
+        if (substr((string)$response->getStatusCode(), 0, 1) !== '2') {
+            $message = sprintf('Got a %d %s status response from Ebay API', $response->getStatusCode(), $response->getReasonPhrase());
+            throw new IdentityProviderException($message, 0, $response);
+        }
     }
 
     /**
