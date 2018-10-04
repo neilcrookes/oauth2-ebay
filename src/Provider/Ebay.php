@@ -416,6 +416,14 @@ class Ebay extends AbstractProvider
     }
 
     /**
+     * @inheritdoc
+     */
+    protected function getAllowedClientOptions(array $options)
+    {
+        return array_merge(parent::getAllowedClientOptions($options), ['http_errors' => false]);
+    }
+
+    /**
      * Creates an access token from a response.
      *
      * The grant that was used to fetch the response can be used to provide
