@@ -21,6 +21,7 @@ $provider = new \NeilCrookes\OAuth2\Client\Provider\Ebay([
     'redirectUri' => 'YOUR EBAY "RU" NAME',
     'scopeSeparator' => ' ',
     'sandbox' => true, //defaults to false, i.e. production
+    'http_errors' => false, // Optional. Means Guzzle Exceptions aren't thrown on 4xx or 5xx responses from eBay, allowing you to detect and handle them yourself
 ]);
 
 $accessToken = $provider->getAccessToken('authorization_code', [
