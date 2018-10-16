@@ -420,7 +420,7 @@ class Ebay extends AbstractProvider
      */
     protected function getAllowedClientOptions(array $options)
     {
-        return array_merge(parent::getAllowedClientOptions($options), ['http_errors']);
+        return array_merge(parent::getAllowedClientOptions($options), ['http_errors', 'read_timeout', 'connect_timeout']);
     }
 
     /**
