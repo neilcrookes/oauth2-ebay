@@ -1,4 +1,4 @@
-# Shopify Provider for OAuth 2.0 Client
+# Ebay Provider for OAuth 2.0 Client
 
 This package provides Ebay OAuth 2.0 support for the PHP League's [OAuth 2.0 Client](https://github.com/thephpleague/oauth2-client).
 
