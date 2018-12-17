@@ -436,6 +436,7 @@ class Ebay extends AbstractProvider
      * @param  array $response
      * @param  AbstractGrant $grant
      * @return AccessToken
+     * @throws IdentityProviderException
      */
     protected function createAccessToken(array $response, AbstractGrant $grant)
     {
@@ -450,6 +451,7 @@ class Ebay extends AbstractProvider
     /**
      * @param EbayAccessToken $accessToken
      * @return EbayAccessToken
+     * @throws IdentityProviderException
      */
     public function refreshAccessToken(EbayAccessToken $accessToken)
     {
@@ -484,6 +486,7 @@ class Ebay extends AbstractProvider
      *
      * @param  AccessToken $token
      * @return mixed
+     * @throws IdentityProviderException
      */
     public function fetchResourceOwnerDetails(AccessToken $token)
     {
@@ -537,7 +540,7 @@ class Ebay extends AbstractProvider
      */
     public function parseResponse(ResponseInterface $response)
     {
-        $content = trim((string) $response->getBody());
+        $content = trim((string)$response->getBody());
 
         if (empty($content))
         {
@@ -646,7 +649,7 @@ class Ebay extends AbstractProvider
      */
     protected function parseXml(ResponseInterface $response)
     {
-        $content = (string) $response->getBody();
+        $content = (string)$response->getBody();
         $xml = simplexml_load_string($content);
         return $this->xml2array($xml);
     }
