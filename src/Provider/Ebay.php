@@ -424,19 +424,30 @@ class Ebay extends AbstractProvider
 
     /**
      * @param EbayAccessToken $accessToken
+     * @param array $options
      * @return EbayAccessToken
      * @throws IdentityProviderException
      */
-    public function refreshAccessToken(EbayAccessToken $accessToken)
+    public function refreshAccessToken(EbayAccessToken $accessToken, array $options = [])
     {
-        $newAccessToken = $this->getAccessToken('refresh_token', [
-            'refresh_token' => $accessToken->getRefreshToken()
-        ]);
-        $options = array_merge($accessToken->jsonSerialize(), [
+        $options['refresh_token'] = $accessToken->getRefreshToken();
+
+        if (empty($options['scope'])) {
+            $options['scope'] = $this->getDefaultScopes();
+        }
+
+        if (is_array($options['scope'])) {
+            $separator = $this->getScopeSeparator();
+            $options['scope'] = implode($separator, $options['scope']);
+        }
+
+        $newAccessToken = $this->getAccessToken('refresh_token', $options);
+
+        $params = array_merge($accessToken->jsonSerialize(), [
             'access_token' => $newAccessToken->getToken(),
             'expires' => $newAccessToken->getExpires()
         ]);
-        return new EbayAccessToken($options);
+        return new EbayAccessToken($params);
     }
 
     /**
@@ -555,7 +566,7 @@ class Ebay extends AbstractProvider
     {
         if (substr((string)$response->getStatusCode(), 0, 1) !== '2') {
             $message = sprintf('Got a %d %s status response from Ebay API', $response->getStatusCode(), $response->getReasonPhrase());
-            throw new IdentityProviderException($message, 0, $response->getBody()->getContents());
+            throw new IdentityProviderException($message, 0, $data);
         }
     }
 
