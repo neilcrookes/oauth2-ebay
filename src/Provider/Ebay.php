@@ -555,7 +555,7 @@ class Ebay extends AbstractProvider
     {
         if (substr((string)$response->getStatusCode(), 0, 1) !== '2') {
             $message = sprintf('Got a %d %s status response from Ebay API', $response->getStatusCode(), $response->getReasonPhrase());
-            throw new IdentityProviderException($message, 0, $response);
+            throw new IdentityProviderException($message, 0, $response->getBody()->getContents());
         }
     }
 
