@@ -390,32 +390,6 @@ class Ebay extends AbstractProvider
     }
 
     /**
-     * @param array $params
-     * @return array
-     */
-    protected function getAccessTokenOptions(array $params)
-    {
-        $options = [
-            'headers' => [
-                'Accept' => 'application/json',
-                'Content-Type' => 'application/x-www-form-urlencoded',
-                'Authorization' => sprintf(
-                    'Basic %s',
-                    base64_encode(sprintf('%s:%s', $params['client_id'], $params['client_secret']))
-                ),
-            ],
-        ];
-
-        unset($params['client_id'], $params['client_secret']);
-
-        if ($this->getAccessTokenMethod() === self::METHOD_POST) {
-            $options['body'] = $this->getAccessTokenBody($params);
-        }
-
-        return $options;
-    }
-
-    /**
      * @inheritdoc
      */
     protected function getAllowedClientOptions(array $options)

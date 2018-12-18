@@ -22,6 +22,8 @@ $provider = new \NeilCrookes\OAuth2\Client\Provider\Ebay([
     'scopeSeparator' => ' ',
     'sandbox' => true, //defaults to false, i.e. production
     'http_errors' => false, // Optional. Means Guzzle Exceptions aren't thrown on 4xx or 5xx responses from eBay, allowing you to detect and handle them yourself
+], [
+    'optionProvider' => new \League\OAuth2\Client\OptionProvider\HttpBasicAuthOptionProvider()
 ]);
 
 $accessToken = $provider->getAccessToken('authorization_code', [
