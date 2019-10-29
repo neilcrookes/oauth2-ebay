@@ -358,6 +358,14 @@ class Ebay extends AbstractProvider
     }
 
     /**
+     * @return string
+     */
+    protected function getScopeSeparator()
+    {
+        return ' ';
+    }
+
+    /**
      * @return array
      */
     public function getLocaleToDefaultGlobalIdMap()
