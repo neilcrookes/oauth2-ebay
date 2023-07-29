@@ -7,7 +7,7 @@ This package provides Ebay OAuth 2.0 support for the PHP League's [OAuth 2.0 Cli
 To install, use composer:
 
 ```
-composer require neilcrookes/oauth2-ebay
+composer require christian71-stack/oauth2-ebay
 ```
 
 ## Usage
