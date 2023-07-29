@@ -1,5 +1,6 @@
 {
-  "name": "neilcrookes/oauth2-ebay",
+  "name": "christian71-stack/oauth2-ebay",
+  "version": "1.0.0",
   "description": "eBay OAuth 2.0 Client Provider for The PHP League OAuth2-Client",
   "keywords": [
     "oauth",
